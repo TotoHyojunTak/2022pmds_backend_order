@@ -45,13 +45,13 @@ jobs:
 #       shell: bash
 
     ## create application-dev.yaml
-    - name: create application-dev.yaml
-      ## if: contains(github.ref, 'develop')
-      run: |
-        cd ./src/main/resources
-        touch ./application-dev.yaml
-        echo "${{ secrets.PROPERTIES_DEV }}" > ./application-dev.yaml
-      shell: bash
+#     - name: create application-dev.yaml
+#       ## if: contains(github.ref, 'develop')
+#       run: |
+#         cd ./src/main/resources
+#         touch ./application-dev.yaml
+#         echo "${{ secrets.PROPERTIES_DEV }}" > ./application-dev.yaml
+#       shell: bash
 
     ## gradle build
     - name: Build with Gradle
