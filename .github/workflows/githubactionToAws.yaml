@@ -127,7 +127,7 @@ jobs:
           docker stop ${{ secrets.PROJECT_NAME }}
           docker rm ${{ secrets.PROJECT_NAME }}
           docker rmi ${{ secrets.DOCKER_FULL_REPO }}
-          docker run -d -p 9999:9999 -e "SPRING_PROFILES_ACTIVE=dev" --name ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_FULL_REPO }}
+          docker run -d -p 9997:9997 -e "SPRING_PROFILES_ACTIVE=dev" --name ${{ secrets.PROJECT_NAME }} ${{ secrets.DOCKER_FULL_REPO }}
 #       uses: appleboy/ssh-action@master
 #       id: deploy-dev
 #       #if: contains(github.ref, 'develop')
