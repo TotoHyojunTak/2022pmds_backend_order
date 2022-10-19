@@ -1,5 +1,4 @@
-package com.backend.config;
-
+package com.backend.order.order.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;

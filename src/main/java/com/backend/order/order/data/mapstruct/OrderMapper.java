@@ -1,8 +1,8 @@
-package com.backend.data.mapstruct;
+package com.backend.order.order.data.mapstruct;
 
-import com.backend.data.dto.request.UserReqDTO;
-import com.backend.data.dto.response.UserDTO;
-import com.backend.data.entity.UserEntity;
+import com.backend.order.order.data.dto.request.OrderReqDTO;
+import com.backend.order.order.data.dto.response.OrderDTO;
+import com.backend.order.order.data.entity.OrderEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
@@ -11,23 +11,19 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+public interface OrderMapper {
+    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
-    @Mapping(target="orders", ignore=true)
-    UserDTO toDto(UserEntity entity);
-
+    OrderDTO toDto(OrderEntity entity);
 
 
-    @Mapping(target="id", ignore=true)
-    @Mapping(target="userId", ignore=true)
-    @Mapping(target="encryptedPwd", ignore=true)
-    UserEntity toEntity(UserReqDTO dto);
+
+    OrderEntity toEntity(OrderReqDTO dto);
 
 
-    List<UserDTO> toDtoList(List<UserEntity> entityList);
+    List<OrderDTO> toDtoList(List<OrderEntity> entityList);
 
-	List<UserEntity> toEntityList(List<UserReqDTO> dtoList);
+	List<OrderEntity> toEntityList(List<OrderReqDTO> dtoList);
 
 
 }

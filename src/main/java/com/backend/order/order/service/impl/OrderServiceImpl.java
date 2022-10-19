@@ -1,17 +1,17 @@
-package com.backend.order.order.service;
+package com.backend.order.order.service.impl;
 
-import com.backend.order.order.data.entity.OrderEntity;
+import com.backend.order.order.data.dto.request.OrderReqDTO;
+import com.backend.order.order.data.dto.response.OrderDTO;
+import com.backend.order.order.data.edm.KafkaProducer;
+import com.backend.order.order.data.mapstruct.OrderMapper;
 import com.backend.order.order.data.repository.OrderRepository;
-import com.ecom.order.dto.OrderDto;
-import com.ecom.order.jpa.OrderRepository;
+import com.backend.order.order.service.OrderService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,38 +21,36 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final KafkaProducer kafkaProducer;
 
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+
+    @Override
+    public OrderDTO createOrder(OrderReqDTO orderReqDTO) {
+        orderReqDTO.setOrderId(UUID.randomUUID().toString());
+        orderReqDTO.setTotalPrice(orderReqDTO.getQty() * orderReqDTO.getUnitPrice());
+        orderRepository.save(OrderMapper.INSTANCE.toEntity(orderReqDTO));
+
+
+        /* kafka - start */
+        //orderReqDTO.setOrderId(UUID.randomUUID().toString());
+        //orderReqDTO.setTotalPrice(orderDetails.getQty() * orderDetails.getUnitPrice());
+
+        /* send this order to the kafka */
+        kafkaProducer.send("catalog-topic", orderReqDTO);
+        //orderProducer.send("orders", orderDto);
+        //ResponseOrder responseOrder = mapper.map(orderDto, ResponseOrder.class);
+        /* kafka - end */
+
+        return OrderMapper.INSTANCE.toDto(orderRepository.findByOrderId(orderReqDTO.getOrderId()));
     }
 
     @Override
-    public OrderDto createOrder(OrderDto orderDto) {
-        orderDto.setOrderId(UUID.randomUUID().toString());
-        orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
-
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        OrderEntity orderEntity = mapper.map(orderDto, OrderEntity.class);
-
-        orderRepository.save(orderEntity);
-
-        OrderDto returnValue = mapper.map(orderEntity, OrderDto.class);
-
-        return returnValue;
+    public OrderDTO getOrderByOrderId(String orderId) {
+        return OrderMapper.INSTANCE.toDto(orderRepository.findByOrderId(orderId));
     }
 
     @Override
-    public OrderDto getOrderByOrderId(String orderId) {
-        OrderEntity orderEntity = orderRepository.findByOrderId(orderId);
-        OrderDto orderDto = new ModelMapper().map(orderEntity, OrderDto.class);
-
-        return orderDto;
-    }
-
-    @Override
-    public Iterable<OrderEntity> getOrdersByUserId(String userId) {
-        return orderRepository.findByUserId(userId);
+    public List<OrderDTO> getOrdersByUserId(String userId) {
+        return OrderMapper.INSTANCE.toDtoList(orderRepository.findByUserId(userId));
     }
 }

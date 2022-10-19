@@ -1,15 +1,18 @@
 
-erver:
-  #shutdown: graceful
+server:
+  shutdown: graceful
   servlet:
     context-path: /
     encoding:
       charset: UTF-8
   tomcat:
     uri-encoding: UTF-8
-  port: 0
+  port: 9997
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
   application:
     name: 2022pmds-backend-order
   datasource:
@@ -19,7 +22,7 @@ spring:
     password: 1q2w3e4r!@
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         #show_sql: true
@@ -37,14 +40,6 @@ spring:
 #        web-allow-others: true
 #      path: /h2-console
 
-eureka:
-  instance:
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
 
 jasypt:
   encryptor:
@@ -54,3 +49,54 @@ jasypt:
 logging:
   level:
     com.backend.order: DEBUG
+
+
+
+#########################################################
+#### Actuator
+#########################################################
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: never
+    shutdown:
+      enabled: true
+    caches:
+      enabled: false
+
+info:
+  organization:
+    name: thj0309
+  contact:
+    email: thj0309@hotmail.com
+
+#########################################################
+#### swagger
+#########################################################
+swagger:
+  base:
+    path: com.backend.order.order
+
+#########################################################
+#### kafka
+#########################################################
+kafka:
+  bootstrap:
+    servers:
+      config: 127.0.0.1:9092
+
+#########################################################
+#### Eureka client
+#########################################################
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
