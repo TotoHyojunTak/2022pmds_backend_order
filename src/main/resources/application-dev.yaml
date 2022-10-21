@@ -77,7 +77,7 @@ swagger:
 kafka:
   bootstrap:
     servers:
-      config: 3.36.135.159:9092
+      config: localhost:9092
 
 #########################################################
 #### Eureka client
