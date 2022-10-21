@@ -18,10 +18,10 @@ spring:
   application:
     name: 2022pmds-backend-order
   datasource:
-    url: ENC(4QEH0BKIrxMHrAdxQyczgbZ0e97+5KHCXzfl82mqpglpdoxUZfzLruPuU9eXx9OYiL8Yyj0FNnw3iU+oVt+Lug==)
+    url: ENC(/g0qs1nVV/+gN6+Uu04W/tJeY4gOncRd1Izc253nKmV9oriYBoInliQg3wRI59BYbOEusDTKZ5LzHNP9oVTpUA==)
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    username: ENC(qeMMEH/lgRpLfVX4YqvUSg==)
-    password: ENC(uBs++764HCu1mfJ1Im7MFzWZKjGtJYkw)
+    username: ENC(5xFD0zEFCnqyYUmYnhKHaA==)
+    password: ENC(hkBj5vqREpdZ8C442Sj1TM+tpriZCtnJ)
   jpa:
     hibernate:
       ddl-auto: none
