@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name="tb_orders")
 public class OrderEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 120)

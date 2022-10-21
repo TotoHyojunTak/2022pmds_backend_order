@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -45,5 +48,25 @@ public class OrderController {
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<OrderDTO>> getOrder(@PathVariable("userId") String userId) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrdersByUserId(userId));
+    }
+
+    @GetMapping("/feign/{userId}/list")
+    public ResponseEntity<List<Map<String, String>>> getOrderListForFeign(@PathVariable("userId") String userId){
+        List<Map<String, String>> returnValue = new ArrayList<>();
+
+        List<OrderDTO> result = orderService.getOrdersByUserId(userId);
+        result.forEach(e->{
+
+            Map<String, String> temp = new HashMap<>();
+            temp.put("orderId", e.getOrderId());
+            temp.put("produceId", e.getProductId());
+            temp.put("qty", String.valueOf(e.getQty()));
+            temp.put("unitPrice", String.valueOf(e.getUnitPrice()));
+            temp.put("totalPrice", String.valueOf(e.getTotalPrice()));
+
+            returnValue.add(temp);
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 }
