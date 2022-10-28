@@ -18,7 +18,8 @@ spring:
   application:
     name: 2022pmds-backend-order
   datasource:
-    url: ENC(/g0qs1nVV/+gN6+Uu04W/tJeY4gOncRd1Izc253nKmV9oriYBoInliQg3wRI59BYbOEusDTKZ5LzHNP9oVTpUA==)
+    #url: ENC(/g0qs1nVV/+gN6+Uu04W/tJeY4gOncRd1Izc253nKmV9oriYBoInliQg3wRI59BYbOEusDTKZ5LzHNP9oVTpUA==)
+    url: jdbc:log4jdbc:mariadb://localhost:3306/order
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     username: ENC(5xFD0zEFCnqyYUmYnhKHaA==)
     password: ENC(hkBj5vqREpdZ8C442Sj1TM+tpriZCtnJ)
@@ -64,7 +65,7 @@ management:
         include: "*"
   endpoint:
     health:
-      show-details: never
+      show-details: always
     shutdown:
       enabled: true
     caches:
