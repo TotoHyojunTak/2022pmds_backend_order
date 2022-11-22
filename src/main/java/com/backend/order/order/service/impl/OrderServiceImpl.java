@@ -32,13 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
 
         /* kafka - start */
-        //orderReqDTO.setOrderId(UUID.randomUUID().toString());
-        //orderReqDTO.setTotalPrice(orderDetails.getQty() * orderDetails.getUnitPrice());
-
         /* send this order to the kafka */
         kafkaProducer.send("catalog-topic", orderReqDTO);
         //orderProducer.send("orders", orderDto);
-        //ResponseOrder responseOrder = mapper.map(orderDto, ResponseOrder.class);
         /* kafka - end */
 
         return OrderMapper.INSTANCE.toDto(orderRepository.findByOrderId(orderReqDTO.getOrderId()));

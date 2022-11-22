@@ -39,10 +39,25 @@ public class OrderController {
         orderReqDTO.setUserId(userId);
         OrderDTO createdOrder = orderService.createOrder(orderReqDTO);
 
-
-
         log.info("After added orders data");
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+    }
+
+    @PostMapping("/feign/{userId}/orders")
+    public ResponseEntity<?> createOrderForFeign(@PathVariable("userId") String userId
+                                                , @RequestBody Map<String, String> input) {
+        log.info("Before add orders data");
+
+        OrderReqDTO orderReqDTO = new OrderReqDTO();
+
+        orderReqDTO.setProductId(input.get("productId"));
+        orderReqDTO.setQty(Integer.valueOf(input.get("stock")));
+        orderReqDTO.setUnitPrice(Integer.valueOf(input.get("unitPrice")));
+        orderReqDTO.setUserId(userId);
+        OrderDTO createdOrder = orderService.createOrder(orderReqDTO);
+
+        log.info("After added orders data");
+        return new ResponseEntity<>(createdOrder, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/orders")
